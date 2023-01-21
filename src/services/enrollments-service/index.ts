@@ -4,6 +4,7 @@ import addressRepository, { CreateAddressParams } from "@/repositories/address-r
 import enrollmentRepository, { CreateEnrollmentParams } from "@/repositories/enrollment-repository";
 import { exclude } from "@/utils/prisma-utils";
 import { Address, Enrollment } from "@prisma/client";
+import { AddressFromCep } from "@/protocols";
 
 async function getAddressFromCEP(cep: string): Promise<AddressFromCep> {
   const result = await request.get(`https://viacep.com.br/ws/${cep}/json/`);
@@ -19,14 +20,6 @@ async function getAddressFromCEP(cep: string): Promise<AddressFromCep> {
     uf: result.data.uf
   };
   return addressFromCep;
-}
-
-type AddressFromCep = {
-  cidade: string;
-  complemento: string;
-  bairro: string;
-  logradouro: string;
-  uf: string;
 }
 
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
